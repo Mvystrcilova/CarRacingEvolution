@@ -49,3 +49,14 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+*.egg-info
+
+# neat and gym libraries
+gym/
+neat/
+neat*/
+gym*/
+
+
+numpy*/
+pyglet*/
