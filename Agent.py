@@ -46,7 +46,7 @@ class CarDrivers:
         population.add_reporter(stats)
         population.add_reporter(neat.Checkpointer(5))
 
-        winner = population.run(self.evaluate_genomes, 20)
+        winner = population.run(self.evaluate_genomes, 100)
 
         winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
         print(winner_net)
