@@ -24,9 +24,9 @@ class CarDrivers:
                 # if (_ % 10 == 0) and (_ != 0):
                 action = net.activate(observation)
                 # action2 = env.action_space.sample()
-                print(action)
+                # print(action)
                 action[0] = (((action[0] - 0) * (1 - (-1))/(1-0)) + (-1))
-                print(action)
+                # print(action)
                 observation, reward, done, info = env.step(action)
                 observation = observation.reshape([27648, 1])
                 # print(reward, _)
