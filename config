@@ -12,9 +12,9 @@ activation_mutate_rate  = 0.2
 activation_options      = sigmoid
 
 # node aggregation options
-aggregation_default     = sum
+aggregation_default     = maxabs
 aggregation_mutate_rate = 0.1
-aggregation_options     = sum
+aggregation_options     = product
 
 # node bias options
 bias_init_mean          = 0.0
@@ -35,23 +35,24 @@ conn_delete_prob        = 0.5
 
 # connection enable options
 enabled_default         = True
-enabled_mutate_rate     = 0.09
+enabled_mutate_rate     = 0.3
 
-feed_forward            = False
+feed_forward            = True
 initial_connection      = full_nodirect
 
 # node add/remove rates
-node_add_prob           = 0.2
-node_delete_prob        = 0.2
+node_add_prob           = 0.75
+node_delete_prob        = 0.1
 
 # network parameters
-num_hidden              = 0
+num_hidden              = 9
 num_inputs              = 27648
 num_outputs             = 3
 
 # node response options
 response_init_mean      = 1.0
 response_init_stdev     = 0.0
+# response_init_type    = uniform
 response_max_value      = 30.0
 response_min_value      = -30.0
 response_mutate_power   = 0.0
