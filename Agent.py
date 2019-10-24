@@ -10,7 +10,6 @@ h = open('results_with_1000_hiddennodes.txt', 'w+')
 class CarDrivers:
 
     def evaluate_genomes(self, genomes, config):
-        scaler = MinMaxScaler((-1, 1))
         for genome_id, genome in genomes:
             genome.fitness = 0
             observation = env.reset()
@@ -20,7 +19,6 @@ class CarDrivers:
             for _ in range(1000):
                 env.render()
                 # print(env.action_space.shape)
-                # x = env.observation_space
                 # if (_ % 10 == 0) and (_ != 0):
                 action = net.activate(observation)
                 # action2 = env.action_space.sample()

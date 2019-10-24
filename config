@@ -12,9 +12,9 @@ activation_mutate_rate  = 0.2
 activation_options      = sigmoid
 
 # node aggregation options
-aggregation_default     = maxabs
+aggregation_default     = sum
 aggregation_mutate_rate = 0.1
-aggregation_options     = product
+aggregation_options     = sum
 
 # node bias options
 bias_init_mean          = 0.0
