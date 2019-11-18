@@ -3,6 +3,7 @@ from Environment import drive
 import gym
 from gym import wrappers, logger
 from sklearn.preprocessing import MinMaxScaler
+from keras.models import load_model
 
 env = gym.make('CarRacing-v0')
 observation_space = env.reset()
@@ -10,25 +11,24 @@ h = open('results_with_1000_hiddennodes.txt', 'w+')
 class CarDrivers:
 
     def evaluate_genomes(self, genomes, config):
+        convolutional_net = load_model('convolutional_network_model_smaller_outputsize')
         for genome_id, genome in genomes:
             genome.fitness = 0
             observation = env.reset()
-            observation = observation.reshape([27648, 1])
-            net = neat.nn.FeedForwardNetwork.create(genome, config)
-            # net_observation, net_reward = drive(net)
-            for _ in range(1000):
+            observation = observation.reshape([1, 96, 96, 3]) / 255
+            net = neat.nn.RecurrentNetwork.create(genome, config)
+
+            for _ in range(500):
                 env.render()
-                # print(env.action_space.shape)
-                # if (_ % 10 == 0) and (_ != 0):
+                observation = convolutional_net.predict(observation).flatten()
+
                 action = net.activate(observation)
-                # action2 = env.action_space.sample()
-                # print(action)
                 action[0] = (((action[0] - 0) * (1 - (-1))/(1-0)) + (-1))
-                # print(action)
+
                 observation, reward, done, info = env.step(action)
-                observation = observation.reshape([27648, 1])
-                # print(reward, _)
+                observation = observation.reshape([1, 96, 96, 3]) / 255
                 genome.fitness += reward
+
             message = 'genome fitness: ' + str(genome.fitness) + ' of genome with id: ' + str(genome_id) + '\n'
             h.write(message)
 
