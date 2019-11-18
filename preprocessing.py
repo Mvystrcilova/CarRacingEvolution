@@ -23,8 +23,8 @@ def process_image(observation):
 def create_dataset():
     training_images = numpy.zeros([23126, 600, 400, 3])
     i = 0
-    for filename in os.listdir('/Users/m_vys/Downloads/rgb_observations'):
-        observation = numpy.load('/Users/m_vys/Downloads/rgb_observations/' + filename)
+    for filename in os.listdir('mnt/0/rgb_observations'):
+        observation = numpy.load('mnt/0/rgb_observations/' + filename)
         # observation = process_image(observation)
         observation = observation / 255
         training_images[i] = observation
