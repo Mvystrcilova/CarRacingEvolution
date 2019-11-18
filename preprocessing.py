@@ -31,7 +31,7 @@ def create_dataset():
         i += 1
         print(i)
 
-    numpy.save('rgb_observation_file', training_images)
+    numpy.save('mnt/0/rgb_observation_file', training_images)
 
 
 
@@ -114,6 +114,6 @@ def train_rgb_network(input_file):
     autoencoder.save('mnt/0/convolutional_network_autoencoder_rgb')
     encoder.save('mnt/0/convolutional_network_model_rgb')
 
-# create_dataset()
-train_rgb_network('mnt/0/rgb_observation_file.npy')
+create_dataset()
+# train_rgb_network('mnt/0/rgb_observation_file.npy')
 
