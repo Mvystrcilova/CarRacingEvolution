@@ -4,8 +4,7 @@ from keras.datasets import mnist
 from keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D
 from keras.models import Model
 from keras import backend as K
-from PIL import Image
-import numpy, os, pickle, re, glob, sklearn
+import numpy, os, pickle, re, glob
 
 numbers = re.compile(r'(\d+)')
 
