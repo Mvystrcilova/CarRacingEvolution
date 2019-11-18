@@ -117,9 +117,9 @@ def train_rgb_network(input_file):
 
 # create_dataset()
 # train_rgb_network('/Users/m_vys/Downloads/rgb_observation_file.npy')
-array = numpy.load('mnt/0/rgb_observation_file')
+array = numpy.load('mnt/0/rgb_observation_file.npy')
 array = array.reshape([23126, 400, 600, 3])
 print(array.size)
 array = array[:][:350][:][:]
 print(array.size)
-numpy.save('mnt/0/rgb_observation_file.npy', array)
+numpy.save('mnt/0/rgb_observation_file', array)
