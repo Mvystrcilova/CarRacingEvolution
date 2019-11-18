@@ -26,7 +26,7 @@ def create_dataset():
         observation = numpy.load('mnt/0/rgb_observations/' + filename)
         # observation = process_image(observation)
         observation = observation / 255
-        training_images[i] = observation[:350][:][:]
+        training_images[i] = observation.reshape([400, 600, 3])[:350][:][:]
         i += 1
         print(i)
     print(training_images.size)
