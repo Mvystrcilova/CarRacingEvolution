@@ -15,7 +15,7 @@ class CarDrivers:
         for genome_id, genome in genomes:
             genome.fitness = 0
             observation = env.reset()
-            observation = observation.reshape([1, 96, 96, 3]) / 255
+            observation = observation.reshape([1, 400, 600, 3]) / 255
             net = neat.nn.RecurrentNetwork.create(genome, config)
 
             for _ in range(500):
@@ -26,7 +26,7 @@ class CarDrivers:
                 action[0] = (((action[0] - 0) * (1 - (-1))/(1-0)) + (-1))
 
                 observation, reward, done, info = env.step(action)
-                observation = observation.reshape([1, 96, 96, 3]) / 255
+                observation = observation.reshape([1, 400, 600, 3]) / 255
                 genome.fitness += reward
 
             message = 'genome fitness: ' + str(genome.fitness) + ' of genome with id: ' + str(genome_id) + '\n'

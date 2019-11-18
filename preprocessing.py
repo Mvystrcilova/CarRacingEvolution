@@ -20,16 +20,16 @@ def process_image(observation):
 
 
 def create_dataset():
-    training_images = numpy.zeros([23126, 600, 400, 3])
+    training_images = numpy.zeros([23126, 350, 600, 3])
     i = 0
     for filename in os.listdir('mnt/0/rgb_observations'):
         observation = numpy.load('mnt/0/rgb_observations/' + filename)
         # observation = process_image(observation)
         observation = observation / 255
-        training_images[i] = observation
+        training_images[i] = observation[:350][:][:]
         i += 1
         print(i)
-
+    print(training_images.size)
     numpy.save('mnt/0/rgb_observation_file', training_images)
 
 
@@ -115,11 +115,6 @@ def train_rgb_network(input_file):
     autoencoder.save('convolutional_network_autoencoder_rgb')
     encoder.save('convolutional_network_model_rgb')
 
-# create_dataset()
+create_dataset()
 # train_rgb_network('/Users/m_vys/Downloads/rgb_observation_file.npy')
-array = numpy.load('mnt/0/rgb_observation_file.npy')
-array = array.reshape([23126, 400, 600, 3])
-print(array.size)
-array = array[:][:350][:][:]
-print(array.size)
-numpy.save('mnt/0/rgb_observation_file', array)
+
