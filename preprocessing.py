@@ -104,8 +104,8 @@ def train_rgb_network(input_file):
     encoder.summary()
     # input = numpy.load(input_file)
     autoencoder.compile(optimizer='adam', loss='mse')
-    trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=512)
-    hist = autoencoder.fit_generator(trainGen, epochs=120, steps_per_epoch=50, verbose=True)
+    trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=256)
+    hist = autoencoder.fit_generator(trainGen, epochs=120, steps_per_epoch=100, verbose=True)
     # hist = autoencoder.fit(input, input, batch_size=128, epochs=60, verbose=True)
 
     with open('mnt/0/histories/convolutional_network_training_history', 'wb') as file_pi:
