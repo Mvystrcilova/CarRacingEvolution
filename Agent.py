@@ -14,6 +14,7 @@ class CarDrivers:
         convolutional_net = load_model('convolutional_network_model_smaller_outputsize')
         for genome_id, genome in genomes:
             genome.fitness = 0
+
             observation = env.reset()
             observation = observation.reshape([1, 400, 600, 3]) / 255
             net = neat.nn.RecurrentNetwork.create(genome, config)

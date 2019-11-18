@@ -105,16 +105,16 @@ def train_rgb_network(input_file):
     encoder.summary()
     # input = numpy.load(input_file)
     autoencoder.compile(optimizer='adam', loss='mse')
-    trainGen = generate_input(spec_directory='/Users/m_vys/Downloads/rgb_observations', batch_size=64)
+    trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=64)
     hist = autoencoder.fit_generator(trainGen, epochs=60, steps_per_epoch=360, verbose=True)
     # hist = autoencoder.fit(input, input, batch_size=128, epochs=60, verbose=True)
 
-    with open('histories/convolutional_network_training_history', 'wb') as file_pi:
+    with open('mnt/0/histories/convolutional_network_training_history', 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
 
-    autoencoder.save('convolutional_network_autoencoder_rgb')
-    encoder.save('convolutional_network_model_rgb')
+    autoencoder.save('mnt/0/convolutional_network_autoencoder_rgb')
+    encoder.save('/mnt/0/convolutional_network_model_rgb')
 
-create_dataset()
-# train_rgb_network('/Users/m_vys/Downloads/rgb_observation_file.npy')
+# create_dataset()
+train_rgb_network('/Users/m_vys/Downloads/rgb_observation_file.npy')
 
