@@ -72,7 +72,8 @@ def generate_input(spec_directory, batch_size):
         while len(specs) < batch_size:
             if (i > 23126):
                 i = 0
-            spec = numpy.load(files[i])
+            spec = numpy.load(files[i]).reshape([400,600,3])
+            spec = spec[:350][:][:]
             # print(files[i])
             # if (i % 1000) == 0:
             #     img = Image.fromarray(spec, 'RGB')
@@ -83,37 +84,42 @@ def generate_input(spec_directory, batch_size):
         yield ((numpy.array(specs)), numpy.array(specs))
 
 def train_rgb_network(input_file):
-    input_image = Input(shape=(600, 400, 3))
-    x = Conv2D(16, (3, 2), activation='relu', padding='same')(input_image)
-    x = MaxPooling2D((3, 4), padding='same')(x)
-    x = Conv2D(8, (3, 2), activation='relu', padding='same')(x)
+    input_image = Input(shape=(350, 600, 3))
+    x = Conv2D(16, (2, 2), activation='relu', padding='same')(input_image)
+    x = MaxPooling2D((2, 2), padding='same')(x)
+    x = Conv2D(8, (2, 2), activation='relu', padding='same')(x)
     x = MaxPooling2D((5, 5), padding='same')(x)
-    x = Conv2D(3, (5, 2), activation='relu', padding='same')(x)
+    x = Conv2D(3, (2, 2), activation='relu', padding='same')(x)
     # x = MaxPooling2D((4, 2), padding='same')(x)
     # x = Conv2D(1, (3, 2), activation='relu', padding='same')(x)
-    encoded = MaxPooling2D((4, 4), padding='same')(x)
-    x = UpSampling2D((3, 4))(x)
-    x = Conv2D(8, (3, 2), activation='relu', padding='same')(x)
+    encoded = MaxPooling2D((3, 3), padding='same')(x)
+    x = UpSampling2D((2, 2))(x)
+    x = Conv2D(16, (2, 2), activation='relu', padding='same')(x)
     x = UpSampling2D((5, 5))(x)
-    # x = Conv2D(12, (3, 2), activation='relu', padding='same')(x)
+    x = Conv2D(8, (2, 2), activation='relu', padding='same')(x)
     # x = UpSampling2D((2, 4))(x)
-    decoded = Conv2D(3, (3, 2), activation='sigmoid', padding='same')(x)
+    decoded = Conv2D(3, (2, 2), activation='sigmoid', padding='same')(x)
     autoencoder = Model(input_image, decoded)
     autoencoder.summary()
     encoder = Model(input_image, encoded)
     encoder.summary()
     # input = numpy.load(input_file)
     autoencoder.compile(optimizer='adam', loss='mse')
-    trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=128)
-    hist = autoencoder.fit_generator(trainGen, epochs=120, steps_per_epoch=180, verbose=True)
+    trainGen = generate_input(spec_directory='/Users/m_vys/Downloads/rgb_observations', batch_size=64)
+    hist = autoencoder.fit_generator(trainGen, epochs=60, steps_per_epoch=360, verbose=True)
     # hist = autoencoder.fit(input, input, batch_size=128, epochs=60, verbose=True)
 
-    with open('mnt/0/histories/convolutional_network_training_history', 'wb') as file_pi:
+    with open('histories/convolutional_network_training_history', 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
 
-    autoencoder.save('mnt/0/convolutional_network_autoencoder_rgb')
-    encoder.save('mnt/0/convolutional_network_model_rgb')
+    autoencoder.save('convolutional_network_autoencoder_rgb')
+    encoder.save('convolutional_network_model_rgb')
 
 # create_dataset()
-train_rgb_network('mnt/0/rgb_observation_file.npy')
-
+# train_rgb_network('/Users/m_vys/Downloads/rgb_observation_file.npy')
+array = numpy.load('mnt/0/rgb_observation_file')
+array = array.reshape([23126, 400, 600, 3])
+print(array.size)
+array = array[:][:350][:][:]
+print(array.size)
+numpy.save('mnt/0/rgb_observation_file', array)
