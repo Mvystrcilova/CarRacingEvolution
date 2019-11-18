@@ -111,22 +111,23 @@ def train_rgb_network(input_file):
     trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=64)
     callbacklist = [checkpoint]
     # hist = autoencoder.fit(input, input, batch_size=128, epochs=60, verbose=True)
-    hist = autoencoder.fit_generator(trainGen, epochs=10, steps_per_epoch=360, verbose=True, callbacks=callbacklist)
-    encoder.save('/mnt/0/convolutional_network_model_rgb')
+    hist = autoencoder.fit_generator(trainGen, epochs=20, steps_per_epoch=360, verbose=True, callbacks=callbacklist)
 
+    # encoder.save('/mnt/0/convolutional_network_model_rgb')
+    #
     with open('mnt/0/histories/convolutional_network_training_history', 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
+    #
+    # second_model = load_model('mnt/0/convolutional_network_autoencoder_rgb')
+    # checkpoint = ModelCheckpoint('mnt/0/convolutional_network_autoencoder_rgb', monitor='loss', verbose=1, save_best_only=True, mode='min')
+    # callbacklist = [checkpoint]
+    # hist2 = second_model.fit_generator(trainGen, epochs=10, steps_per_epoch=360, verbose=True, callbacks=callbacklist)
 
-    second_model = load_model('mnt/0/convolutional_network_autoencoder_rgb')
-    checkpoint = ModelCheckpoint('mnt/0/convolutional_network_autoencoder_rgb', monitor='loss', verbose=1, save_best_only=True, mode='min')
-    callbacklist = [checkpoint]
-    hist2 = second_model.fit_generator(trainGen, epochs=10, steps_per_epoch=360, verbose=True, callbacks=callbacklist)
 
+    # with open('mnt/0/histories/convolutional_network_training_history_2', 'wb') as file_pi:
+    #     pickle.dump(hist2.history, file_pi)
 
-    with open('mnt/0/histories/convolutional_network_training_history_2', 'wb') as file_pi:
-        pickle.dump(hist2.history, file_pi)
-
-    # autoencoder.save('mnt/0/convolutional_network_autoencoder_rgb')
+    autoencoder.save('mnt/0/convolutional_network_autoencoder_rgb')
     encoder.save('/mnt/0/convolutional_network_model_rgb')
 
 # create_dataset()
