@@ -84,16 +84,16 @@ def generate_input(spec_directory, batch_size):
 
 def train_rgb_network(input_file):
     input_image = Input(shape=(600, 400, 3))
-    x = Conv2D(32, (3, 2), activation='relu', padding='same')(input_image)
+    x = Conv2D(16, (3, 2), activation='relu', padding='same')(input_image)
     x = MaxPooling2D((3, 4), padding='same')(x)
-    x = Conv2D(16, (3, 2), activation='relu', padding='same')(x)
+    x = Conv2D(8, (3, 2), activation='relu', padding='same')(x)
     x = MaxPooling2D((5, 5), padding='same')(x)
     x = Conv2D(3, (5, 2), activation='relu', padding='same')(x)
     # x = MaxPooling2D((4, 2), padding='same')(x)
     # x = Conv2D(1, (3, 2), activation='relu', padding='same')(x)
     encoded = MaxPooling2D((4, 4), padding='same')(x)
     x = UpSampling2D((3, 4))(x)
-    x = Conv2D(16, (3, 2), activation='relu', padding='same')(x)
+    x = Conv2D(8, (3, 2), activation='relu', padding='same')(x)
     x = UpSampling2D((5, 5))(x)
     # x = Conv2D(12, (3, 2), activation='relu', padding='same')(x)
     # x = UpSampling2D((2, 4))(x)
@@ -105,7 +105,7 @@ def train_rgb_network(input_file):
     # input = numpy.load(input_file)
     autoencoder.compile(optimizer='adam', loss='mse')
     trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=128)
-    hist = autoencoder.fit_generator(trainGen, epochs=120, steps_per_epoch=200, verbose=True)
+    hist = autoencoder.fit_generator(trainGen, epochs=120, steps_per_epoch=180, verbose=True)
     # hist = autoencoder.fit(input, input, batch_size=128, epochs=60, verbose=True)
 
     with open('mnt/0/histories/convolutional_network_training_history', 'wb') as file_pi:
