@@ -2,7 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from keras.datasets import mnist
 from keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D
-from keras.models import Model
+from keras.models import Model, load_model
+from keras.callbacks import ModelCheckpoint
 from keras import backend as K
 import numpy, os, pickle, re, glob
 
@@ -104,15 +105,28 @@ def train_rgb_network(input_file):
     encoder = Model(input_image, encoded)
     encoder.summary()
     # input = numpy.load(input_file)
+    checkpoint = ModelCheckpoint('mnt/0/convolutional_network_autoencoder_rgb', monitor='loss', verbose=1,
+                                 save_best_only=True, mode='min')
     autoencoder.compile(optimizer='adam', loss='mse')
     trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=64)
-    hist = autoencoder.fit_generator(trainGen, epochs=60, steps_per_epoch=360, verbose=True)
+    callbacklist = [checkpoint]
     # hist = autoencoder.fit(input, input, batch_size=128, epochs=60, verbose=True)
+    hist = autoencoder.fit_generator(trainGen, epochs=10, steps_per_epoch=360, verbose=True, callbacks=callbacklist)
+    encoder.save('/mnt/0/convolutional_network_model_rgb')
 
     with open('mnt/0/histories/convolutional_network_training_history', 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
 
-    autoencoder.save('mnt/0/convolutional_network_autoencoder_rgb')
+    second_model = load_model('mnt/0/convolutional_network_autoencoder_rgb')
+    checkpoint = ModelCheckpoint('mnt/0/convolutional_network_autoencoder_rgb', monitor='loss', verbose=1, save_best_only=True, mode='min')
+    callbacklist = [checkpoint]
+    hist2 = second_model.fit_generator(trainGen, epochs=10, steps_per_epoch=360, verbose=True, callbacks=callbacklist)
+
+
+    with open('mnt/0/histories/convolutional_network_training_history_2', 'wb') as file_pi:
+        pickle.dump(hist2.history, file_pi)
+
+    # autoencoder.save('mnt/0/convolutional_network_autoencoder_rgb')
     encoder.save('/mnt/0/convolutional_network_model_rgb')
 
 # create_dataset()
