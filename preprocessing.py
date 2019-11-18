@@ -122,4 +122,4 @@ array = array.reshape([23126, 400, 600, 3])
 print(array.size)
 array = array[:][:350][:][:]
 print(array.size)
-numpy.save('mnt/0/rgb_observation_file', array)
+numpy.save('mnt/0/rgb_observation_file.npy', array)
