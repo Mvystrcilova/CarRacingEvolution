@@ -131,14 +131,14 @@ def train_rgb_network(input_file):
     encoder.save('/mnt/0/convolutional_network_model_rgb')
 def train_again(model_file):
     model = load_model(model_file)
-    encoder = K.function([model.layers[0].input], model.layers[6])
+    # encoder = K.function([model.layers[0].input], model.layers[5])
     print(encoder.outputs.shape)
     checkpoint = ModelCheckpoint(model_file, monitor='loss', verbose=1, save_best_only=True, mode='min')
     trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=64)
     callbacklist = [checkpoint]
     hist = model.fit_generator(trainGen, epochs=20, steps_per_epoch = 360, verbose=True, callbacklist=callbacklist)
 
-    encoder.save('/mnt/0/convolutional_network_encoder_rgb')
+    # encoder.save('/mnt/0/convolutional_network_encoder_rgb')
 
     with open('mnt/0/histories/convolutional_network_training_history', 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
