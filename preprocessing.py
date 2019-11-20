@@ -106,7 +106,7 @@ def train_unscaled_rgb_network(input_file):
     checkpoint = ModelCheckpoint('mnt/0/unscaled_cnn_autoencoder_rgb', monitor='loss', verbose=1,
                                  save_best_only=True, mode='min')
     autoencoder.compile(optimizer='adam', loss='mse')
-    trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=64)
+    trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=64, scale=False)
     callbacklist = [checkpoint]
     # hist = autoencoder.fit(input, input, batch_size=128, epochs=60, verbose=True)
     hist = autoencoder.fit_generator(trainGen, epochs=20, steps_per_epoch=360, verbose=True, callbacks=callbacklist)
