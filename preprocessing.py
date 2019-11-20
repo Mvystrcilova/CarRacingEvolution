@@ -86,26 +86,23 @@ def generate_input(spec_directory, batch_size):
 
 def train_rgb_network(input_file):
     input_image = Input(shape=(350, 600, 3))
-    x = Conv2D(16, (2, 2), activation='relu', padding='same')(input_image)
-    x = MaxPooling2D((2, 2), padding='same')(x)
-    x = Conv2D(8, (2, 2), activation='relu', padding='same')(x)
+    x = Conv2D(32, (2, 2), activation='relu', padding='same')(input_image)
     x = MaxPooling2D((5, 5), padding='same')(x)
-    x = Conv2D(3, (2, 2), activation='relu', padding='same')(x)
-    # x = MaxPooling2D((4, 2), padding='same')(x)
-    # x = Conv2D(1, (3, 2), activation='relu', padding='same')(x)
-    encoded = MaxPooling2D((3, 3), padding='same')(x)
+    x = Conv2D(32, (2, 2), activation='relu', padding='same')(x)
+    x = MaxPooling2D((2, 2), padding='same')(x)
+    x = Conv2D(32, (3, 3), activation='relu', padding='same')(x)
+    encoded = MaxPooling2D((4, 4), padding='same')(x)
+    x = Conv2D(32, (2, 2), activation='relu', padding='same')(x)
     x = UpSampling2D((2, 2))(x)
-    x = Conv2D(16, (2, 2), activation='relu', padding='same')(x)
+    x = Conv2D(32, (2, 2), activation='relu', padding='same')(x)
     x = UpSampling2D((5, 5))(x)
-    x = Conv2D(8, (2, 2), activation='relu', padding='same')(x)
-    # x = UpSampling2D((2, 4))(x)
     decoded = Conv2D(3, (2, 2), activation='sigmoid', padding='same')(x)
     autoencoder = Model(input_image, decoded)
     autoencoder.summary()
     encoder = Model(input_image, encoded)
     encoder.summary()
     # input = numpy.load(input_file)
-    checkpoint = ModelCheckpoint('mnt/0/convolutional_network_autoencoder_rgb', monitor='loss', verbose=1,
+    checkpoint = ModelCheckpoint('mnt/0/cnn_autoencoder_rgb', monitor='loss', verbose=1,
                                  save_best_only=True, mode='min')
     autoencoder.compile(optimizer='adam', loss='mse')
     trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=64)
@@ -115,7 +112,7 @@ def train_rgb_network(input_file):
 
     # encoder.save('/mnt/0/convolutional_network_model_rgb')
     #
-    with open('mnt/0/histories/convolutional_network_training_history', 'wb') as file_pi:
+    with open('mnt/0/histories/cnn_rgb_training_history', 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
     #
     # second_model = load_model('mnt/0/convolutional_network_autoencoder_rgb')
@@ -127,8 +124,9 @@ def train_rgb_network(input_file):
     # with open('mnt/0/histories/convolutional_network_training_history_2', 'wb') as file_pi:
     #     pickle.dump(hist2.history, file_pi)
 
-    autoencoder.save('mnt/0/convolutional_network_autoencoder_rgb')
-    encoder.save('/mnt/0/convolutional_network_model_rgb')
+    autoencoder.save('mnt/0/cnn_autoencoder_1_rgb')
+    encoder.save('/mnt/0/cnn_encoder_1_rgb')
+
 def train_again(model_file):
     model = load_model(model_file)
     # encoder = K.function([model.layers[0].input], model.layers[5])
@@ -136,7 +134,7 @@ def train_again(model_file):
     checkpoint = ModelCheckpoint(model_file, monitor='loss', verbose=1, save_best_only=True, mode='min')
     trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=64)
     callbacklist = [checkpoint]
-    hist = model.fit_generator(trainGen, epochs=20, steps_per_epoch = 360, verbose=True, callbacks=callbacklist)
+    hist = model.fit_generator(trainGen, epochs=20, steps_per_epoch=360, verbose=True, callbacks=callbacklist)
 
     # encoder.save('/mnt/0/convolutional_network_encoder_rgb')
 
@@ -144,5 +142,5 @@ def train_again(model_file):
         pickle.dump(hist.history, file_pi)
 
 # create_dataset()
-# train_rgb_network('/Users/m_vys/Downloads/rgb_observation_file.npy')
-train_again('/mnt/0/convolutional_network_autoencoder_rgb')
+train_rgb_network('/Users/m_vys/Downloads/rgb_observation_file.npy')
+# train_again('/mnt/0/convolutional_network_autoencoder_rgb')
