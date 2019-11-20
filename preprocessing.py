@@ -4,6 +4,7 @@ from keras.datasets import mnist
 from keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D
 from keras.models import Model, load_model
 from keras.callbacks import ModelCheckpoint
+from keras.optimizers import Adam
 from keras import backend as K
 import numpy, os, pickle, re, glob
 
@@ -105,6 +106,7 @@ def train_unscaled_rgb_network(input_file):
     # input = numpy.load(input_file)
     checkpoint = ModelCheckpoint('mnt/0/unscaled_cnn_autoencoder_rgb', monitor='loss', verbose=1,
                                  save_best_only=True, mode='min')
+    adam = Adam
     autoencoder.compile(optimizer='adam', loss='mse')
     trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=64, scale=False)
     callbacklist = [checkpoint]
@@ -136,7 +138,8 @@ def train_rgb_network(input_file):
     # input = numpy.load(input_file)
     checkpoint = ModelCheckpoint('mnt/0/cnn_autoencoder_rgb', monitor='loss', verbose=1,
                                  save_best_only=True, mode='min')
-    autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
+    adam = Adam(learning_rate=0.00001)
+    autoencoder.compile(optimizer=adam, loss='binary_crossentropy')
     trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=64, scale=True)
     callbacklist = [checkpoint]
     # hist = autoencoder.fit(input, input, batch_size=128, epochs=60, verbose=True)
