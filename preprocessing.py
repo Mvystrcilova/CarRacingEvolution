@@ -90,7 +90,7 @@ def train_rgb_network(input_file):
     x = MaxPooling2D((5, 5), padding='same')(x)
     x = Conv2D(32, (2, 2), activation='relu', padding='same')(x)
     x = MaxPooling2D((2, 2), padding='same')(x)
-    x = Conv2D(32, (3, 3), activation='relu', padding='same')(x)
+    x = Conv2D(3, (3, 3), activation='relu', padding='same')(x)
     encoded = MaxPooling2D((4, 4), padding='same')(x)
     x = Conv2D(32, (2, 2), activation='relu', padding='same')(x)
     x = UpSampling2D((2, 2))(x)
