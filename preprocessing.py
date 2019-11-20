@@ -93,9 +93,9 @@ def train_unscaled_rgb_network(input_file):
     x = MaxPooling2D((2, 2), padding='same')(x)
     x = Conv2D(3, (3, 3), activation='relu', padding='same')(x)
     encoded = MaxPooling2D((4, 4), padding='same')(x)
-    x = Conv2D(32, (2, 2), activation='mse', padding='same')(x)
+    x = Conv2D(32, (2, 2), activation='relu', padding='same')(x)
     x = UpSampling2D((2, 2))(x)
-    x = Conv2D(32, (2, 2), activation='mse', padding='same')(x)
+    x = Conv2D(32, (2, 2), activation='relu', padding='same')(x)
     x = UpSampling2D((5, 5))(x)
     decoded = Conv2D(3, (2, 2), activation='sigmoid', padding='same')(x)
     autoencoder = Model(input_image, decoded)
@@ -103,7 +103,7 @@ def train_unscaled_rgb_network(input_file):
     encoder = Model(input_image, encoded)
     encoder.summary()
     # input = numpy.load(input_file)
-    checkpoint = ModelCheckpoint('mnt/0/cnn_autoencoder_rgb', monitor='loss', verbose=1,
+    checkpoint = ModelCheckpoint('mnt/0/unscaled_cnn_autoencoder_rgb', monitor='loss', verbose=1,
                                  save_best_only=True, mode='min')
     autoencoder.compile(optimizer='adam', loss='mse')
     trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=64)
@@ -113,7 +113,7 @@ def train_unscaled_rgb_network(input_file):
 
     # encoder.save('/mnt/0/convolutional_network_model_rgb')
     #
-    with open('mnt/0/histories/cnn_rgb_training_history', 'wb') as file_pi:
+    with open('mnt/0/histories/unscaled_cnn_rgb_training_history', 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
 
 def train_rgb_network(input_file):
@@ -174,5 +174,6 @@ def train_again(model_file):
         pickle.dump(hist.history, file_pi)
 
 # create_dataset()
-train_rgb_network('/Users/m_vys/Downloads/rgb_observation_file.npy')
+# train_rgb_network('/Users/m_vys/Downloads/rgb_observation_file.npy')
 # train_again('/mnt/0/convolutional_network_autoencoder_rgb')
+train_unscaled_rgb_network('bla bla')
