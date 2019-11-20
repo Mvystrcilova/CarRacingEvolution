@@ -177,6 +177,6 @@ def train_again(model_file):
         pickle.dump(hist.history, file_pi)
 
 # create_dataset()
-# train_rgb_network('/Users/m_vys/Downloads/rgb_observation_file.npy')
+train_rgb_network('/Users/m_vys/Downloads/rgb_observation_file.npy')
 # train_again('/mnt/0/convolutional_network_autoencoder_rgb')
-train_unscaled_rgb_network('bla bla')
+# train_unscaled_rgb_network('bla bla')
