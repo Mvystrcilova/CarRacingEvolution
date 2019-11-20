@@ -136,7 +136,7 @@ def train_rgb_network(input_file):
     encoder = Model(input_image, encoded)
     encoder.summary()
     # input = numpy.load(input_file)
-    checkpoint = ModelCheckpoint('mnt/0/cnn_autoencoder_rgb', monitor='loss', verbose=1,
+    checkpoint = ModelCheckpoint('mnt/0/cnn_autoencoder_rgb_lr5', monitor='loss', verbose=1,
                                  save_best_only=True, mode='min')
     adam = Adam(learning_rate=0.0001)
     autoencoder.compile(optimizer=adam, loss='binary_crossentropy')
@@ -147,7 +147,7 @@ def train_rgb_network(input_file):
 
     # encoder.save('/mnt/0/convolutional_network_model_rgb')
     #
-    with open('mnt/0/histories/cnn_rgb_training_history', 'wb') as file_pi:
+    with open('mnt/0/histories/cnn_rgb_training_history_lr5', 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
     #
     # second_model = load_model('mnt/0/convolutional_network_autoencoder_rgb')
@@ -159,8 +159,8 @@ def train_rgb_network(input_file):
     # with open('mnt/0/histories/convolutional_network_training_history_2', 'wb') as file_pi:
     #     pickle.dump(hist2.history, file_pi)
 
-    autoencoder.save('mnt/0/cnn_autoencoder_1_rgb')
-    encoder.save('/mnt/0/cnn_encoder_1_rgb')
+    autoencoder.save('mnt/0/cnn_autoencoder_2_lr5_rgb')
+    encoder.save('/mnt/0/cnn_encoder_2_lr5_rgb')
 
 def train_again(model_file):
     model = load_model(model_file)
