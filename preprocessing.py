@@ -167,16 +167,16 @@ def train_again(model_file):
     # encoder = K.function([model.layers[0].input], model.layers[5])
     # print(encoder.outputs.shape)
     checkpoint = ModelCheckpoint(model_file, monitor='loss', verbose=1, save_best_only=True, mode='min')
-    trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=64, scale=True)
+    trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=64, scale=False)
     callbacklist = [checkpoint]
     hist = model.fit_generator(trainGen, epochs=20, steps_per_epoch=360, verbose=True, callbacks=callbacklist)
 
     # encoder.save('/mnt/0/convolutional_network_encoder_rgb')
 
-    with open('mnt/0/histories/convolutional_network_training_history_lr5_2', 'wb') as file_pi:
+    with open('mnt/0/histories/convolutional_network_training_history_unscaled_2', 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
 
 # create_dataset()
 # train_rgb_network('/Users/m_vys/Downloads/rgb_observation_file.npy')
-train_again('/mnt/0/cnn_autoencoder_2_lr5_rgb')
+train_again('/mnt/0/unscaled_cnn_autoencoder_rgb')
 # train_unscaled_rgb_network('bla bla')
