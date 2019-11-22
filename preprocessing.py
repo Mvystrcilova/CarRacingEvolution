@@ -7,7 +7,7 @@ from keras.callbacks import ModelCheckpoint
 from keras.optimizers import Adam
 from keras import backend as K
 import numpy, os, pickle, re, glob
-from PIL import Image
+# from PIL import Image
 numbers = re.compile(r'(\d+)')
 
 def numericalSort(value):
@@ -233,51 +233,51 @@ def train_again(model_file):
     with open('mnt/0/histories/convolutional_network_training_history_unscaled_2', 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
 
-def resize_images():
-    i = 0
-    images_36x60 = numpy.zeros([23125, 36, 60, 3])
-
-    for filename in os.listdir('/Users/m_vys/Downloads/rgb_observations'):
-        array = numpy.load('/Users/m_vys/Downloads/rgb_observations/'+ filename)
-
-        array = array.reshape([400, 600, 3])
-        array = array[:350][:][:]
-        img = Image.fromarray(array, 'RGB')
-
-        h1 = 36
-        w1 = 60
-
-        h2 = 70
-        w2 = 120
-
-        h3 = 175
-        w3 = 300
-
-        img1A = img.resize((w1, h1), Image.ANTIALIAS)
-        pix = numpy.array(img1A)
-        images_36x60[i] = pix
-        print(i)
-        i += 1
-
-    numpy.save('images_36x60', images_36x60)
-
-
-        # show_image(w1, h1, img)
-        # show_image(w2, h2, img)
+# def resize_images():
+#     i = 0
+#     images_36x60 = numpy.zeros([23125, 36, 60, 3])
+#
+#     for filename in os.listdir('/Users/m_vys/Downloads/rgb_observations'):
+#         array = numpy.load('/Users/m_vys/Downloads/rgb_observations/'+ filename)
+#
+#         array = array.reshape([400, 600, 3])
+#         array = array[:350][:][:]
+#         img = Image.fromarray(array, 'RGB')
+#
+#         h1 = 36
+#         w1 = 60
+#
+#         h2 = 70
+#         w2 = 120
+#
+#         h3 = 175
+#         w3 = 300
+#
+#         img1A = img.resize((w1, h1), Image.ANTIALIAS)
+#         pix = numpy.array(img1A)
+#         images_36x60[i] = pix
+#         print(i)
+#         i += 1
+#
+#     numpy.save('images_36x60', images_36x60)
+#
+#
+#         # show_image(w1, h1, img)
+#         # show_image(w2, h2, img)
         # show_image(w3, h3, img)
 
-def show_image(width, height, img):
-    img1N = img.resize((width, height), Image.NEAREST)
-    img1B = img.resize((width, height), Image.BILINEAR)
-    img1BC = img.resize((width, height), Image.BICUBIC)
-    img1A = img.resize((width, height), Image.ANTIALIAS)
-
-    img1N.show()
-    img1B.show()
-    img1BC.show()
-    img1A.show()
-
-    return img1A
+# def show_image(width, height, img):
+#     img1N = img.resize((width, height), Image.NEAREST)
+#     img1B = img.resize((width, height), Image.BILINEAR)
+#     img1BC = img.resize((width, height), Image.BICUBIC)
+#     img1A = img.resize((width, height), Image.ANTIALIAS)
+#
+#     img1N.show()
+#     img1B.show()
+#     img1BC.show()
+#     img1A.show()
+#
+#     return img1A
 
 
 # create_dataset()
