@@ -20,4 +20,4 @@ def compare_images(cnn_network_file, image_file):
     img_2 = Image.fromarray(output, 'RGB')
     img_2.show()
 
-compare_images('convolutional_network_autoencoder_rgb_2', '/Users/m_vys/Downloads/rgb_observations/observations_2_2693.npy')
+compare_images('cnn_autoencoder_2_lr5_rgb', '/Users/m_vys/Downloads/rgb_observations/observations_2_2693.npy')

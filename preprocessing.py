@@ -1,13 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from keras.datasets import mnist
-from keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D
+from keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D, ZeroPadding2D
 from keras.models import Model, load_model
 from keras.callbacks import ModelCheckpoint
 from keras.optimizers import Adam
 from keras import backend as K
 import numpy, os, pickle, re, glob
-
+from PIL import Image
 numbers = re.compile(r'(\d+)')
 
 def numericalSort(value):
@@ -118,6 +118,63 @@ def train_unscaled_rgb_network(input_file):
     with open('mnt/0/histories/unscaled_cnn_rgb_training_history', 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
 
+
+def train_rgb_network_scaled_36x60(input_file, history_file):
+    input_image = Input(shape=(36, 60, 3))
+    x = Conv2D(32, (2, 2), activation='relu', padding='same')(input_image)
+    x = MaxPooling2D((3, 3), padding='same')(x)
+    x = Conv2D(32, (2, 2), activation='relu', padding='same')(x)
+    x = MaxPooling2D((2, 2), padding='same')(x)
+    encoded = Conv2D(3, (3, 3), activation='relu', padding='same')(x)
+    x = UpSampling2D((2, 2))(x)
+    x = Conv2D(32, (2, 2), activation='relu', padding='same')(x)
+    x = UpSampling2D((3, 3))(x)
+    decoded = Conv2D(3, (2, 2), activation='sigmoid', padding='same')(x)
+    autoencoder = Model(input_image, decoded)
+    autoencoder.summary()
+    encoder = Model(input_image, encoded)
+    encoder.summary()
+    input_array = numpy.load(input_file)
+    input_array = input_array/255
+    checkpoint = ModelCheckpoint('mnt/0/cnn_rgb_unscaled_36x60/cnn_rgb_unscaled_36x60_model', monitor='loss', verbose=1,
+                                 save_best_only=True, mode='min')
+    adam = Adam(learning_rate=0.0001)
+    autoencoder.compile(optimizer=adam, loss='binary_crossentropy')
+    callbacklist = [checkpoint]
+    hist = autoencoder.fit(input_array, input_array, epochs=20, verbose=True, callbacks=callbacklist)
+
+    with open(history_file, 'wb') as file_pi:
+        pickle.dump(hist.history, file_pi)
+
+def train_rgb_network_scaled_70x120(input_file, history_file):
+    input_image = Input(shape=(70, 120, 3))
+    x = Conv2D(32, (2, 2), activation='relu', padding='same')(input_image)
+    x = MaxPooling2D((2, 2), padding='same')(x)
+    x = Conv2D(32, (2, 2), activation='relu', padding='same')(x)
+    x = MaxPooling2D((2, 2), padding='same')(x)
+    x = Conv2D(3, (3, 3), activation='relu', padding='same')(x)
+    encoded = MaxPooling2D((2, 2), padding='same')(x)
+    x = Conv2D(32, (2, 2), activation='relu', padding='same')(x)
+    x = UpSampling2D((2, 2))(x)
+    x = Conv2D(32, (2, 2), activation='relu', padding='same')(x)
+    x = UpSampling2D((2, 2))(x)
+    decoded = Conv2D(3, (2, 2), activation='sigmoid', padding='same')(x)
+    autoencoder = Model(input_image, decoded)
+    autoencoder.summary()
+    encoder = Model(input_image, encoded)
+    encoder.summary()
+    input_array = numpy.load(input_file)
+    input_array = input_array/255
+    checkpoint = ModelCheckpoint('mnt/0/cnn_rgb_unscaled_70x120/cnn_rgb_unscaled_70x120_model', monitor='loss', verbose=1,
+                                 save_best_only=True, mode='min')
+    adam = Adam(learning_rate=0.0001)
+    autoencoder.compile(optimizer=adam, loss='binary_crossentropy')
+    callbacklist = [checkpoint]
+    hist = autoencoder.fit(input_array, input_array, epochs=20, verbose=True, callbacks=callbacklist)
+
+    with open(history_file, 'wb') as file_pi:
+        pickle.dump(hist.history, file_pi)
+
 def train_rgb_network(input_file):
     input_image = Input(shape=(350, 600, 3))
     x = Conv2D(32, (2, 2), activation='relu', padding='same')(input_image)
@@ -176,7 +233,57 @@ def train_again(model_file):
     with open('mnt/0/histories/convolutional_network_training_history_unscaled_2', 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
 
+def resize_images():
+    i = 0
+    images_36x60 = numpy.zeros([23125, 36, 60, 3])
+
+    for filename in os.listdir('/Users/m_vys/Downloads/rgb_observations'):
+        array = numpy.load('/Users/m_vys/Downloads/rgb_observations/'+ filename)
+
+        array = array.reshape([400, 600, 3])
+        array = array[:350][:][:]
+        img = Image.fromarray(array, 'RGB')
+
+        h1 = 36
+        w1 = 60
+
+        h2 = 70
+        w2 = 120
+
+        h3 = 175
+        w3 = 300
+
+        img1A = img.resize((w1, h1), Image.ANTIALIAS)
+        pix = numpy.array(img1A)
+        images_36x60[i] = pix
+        print(i)
+        i += 1
+
+    numpy.save('images_36x60', images_36x60)
+
+
+        # show_image(w1, h1, img)
+        # show_image(w2, h2, img)
+        # show_image(w3, h3, img)
+
+def show_image(width, height, img):
+    img1N = img.resize((width, height), Image.NEAREST)
+    img1B = img.resize((width, height), Image.BILINEAR)
+    img1BC = img.resize((width, height), Image.BICUBIC)
+    img1A = img.resize((width, height), Image.ANTIALIAS)
+
+    img1N.show()
+    img1B.show()
+    img1BC.show()
+    img1A.show()
+
+    return img1A
+
+
 # create_dataset()
 # train_rgb_network('/Users/m_vys/Downloads/rgb_observation_file.npy')
-train_again('/mnt/0/unscaled_cnn_autoencoder_rgb')
+# train_again('/mnt/0/unscaled_cnn_autoencoder_rgb')
+# resize_images()
 # train_unscaled_rgb_network('bla bla')
+train_rgb_network_scaled_36x60('mnt/0/images_36x60.npy', 'mnt/0/cnn_rgb_unscaled_36x60/cnn_rgb_unscaled_36x60_model_history_1')
+# train_rgb_network_scaled_70x120('images_70x120.npy', 'mnt/0/cnn_rgb_unscaled_70x120/cnn_rgb_unscaled_70x120_model_history_1')
