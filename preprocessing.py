@@ -141,7 +141,7 @@ def train_rgb_network_scaled_36x60(input_file, history_file):
     adam = Adam(learning_rate=0.0001)
     autoencoder.compile(optimizer=adam, loss='binary_crossentropy')
     callbacklist = [checkpoint]
-    hist = autoencoder.fit(input_array, input_array, epochs=120, verbose=True, callbacks=callbacklist)
+    hist = autoencoder.fit(input_array, input_array, epochs=120, batch_size=256, verbose=True, callbacks=callbacklist)
 
     with open(history_file, 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
@@ -171,7 +171,7 @@ def train_rgb_network_scaled_70x120(input_file, history_file):
     adam = Adam(learning_rate=0.0001)
     autoencoder.compile(optimizer=adam, loss='binary_crossentropy')
     callbacklist = [checkpoint]
-    hist = autoencoder.fit(input_array, input_array, epochs=120, verbose=True, callbacks=callbacklist)
+    hist = autoencoder.fit(input_array, input_array, epochs=120, batch_size=256, verbose=True, callbacks=callbacklist)
 
     with open(history_file, 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
