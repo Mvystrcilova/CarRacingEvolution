@@ -136,7 +136,7 @@ def train_rgb_network_scaled_36x60(input_file, history_file):
     encoder.summary()
     input_array = numpy.load(input_file)
     input_array = input_array/255
-    checkpoint = ModelCheckpoint('mnt/0/cnn_rgb_unscaled_36x60/cnn_rgb_unscaled_36x60_model', monitor='loss', verbose=1,
+    checkpoint = ModelCheckpoint('mnt/0/cnn_rgb_scaled_36x60/cnn_rgb_scaled_36x60_model', monitor='loss', verbose=1,
                                  save_best_only=True, mode='min')
     adam = Adam(learning_rate=0.0001)
     autoencoder.compile(optimizer=adam, loss='binary_crossentropy')
@@ -145,6 +145,7 @@ def train_rgb_network_scaled_36x60(input_file, history_file):
 
     with open(history_file, 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
+
 
 def train_rgb_network_scaled_70x120(input_file, history_file):
     input_image = Input(shape=(70, 120, 3))
@@ -165,12 +166,12 @@ def train_rgb_network_scaled_70x120(input_file, history_file):
     encoder.summary()
     input_array = numpy.load(input_file)
     input_array = input_array/255
-    checkpoint = ModelCheckpoint('mnt/0/cnn_rgb_unscaled_70x120/cnn_rgb_unscaled_70x120_model', monitor='loss', verbose=1,
+    checkpoint = ModelCheckpoint('mnt/0/cnn_rgb_scaled_70x120/cnn_rgb_scaled_70x120_model', monitor='loss', verbose=1,
                                  save_best_only=True, mode='min')
     adam = Adam(learning_rate=0.0001)
     autoencoder.compile(optimizer=adam, loss='binary_crossentropy')
     callbacklist = [checkpoint]
-    hist = autoencoder.fit(input_array, input_array, epochs=20, verbose=True, callbacks=callbacklist)
+    hist = autoencoder.fit(input_array, input_array, epochs=120, verbose=True, callbacks=callbacklist)
 
     with open(history_file, 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
@@ -286,4 +287,4 @@ def train_again(model_file):
 # resize_images()
 # train_unscaled_rgb_network('bla bla')
 train_rgb_network_scaled_36x60('mnt/0/cnn_rgb_scaled_36x60/images_36x60.npy', 'mnt/0/cnn_rgb_scaled_36x60/cnn_rgb_scaled_36x60_model_history_1')
-# train_rgb_network_scaled_70x120('images_70x120.npy', 'mnt/0/cnn_rgb_unscaled_70x120/cnn_rgb_unscaled_70x120_model_history_1')
+# train_rgb_network_scaled_70x120('images_70x120.npy', 'mnt/0/cnn_rgb_scaled_70x120/cnn_rgb_scaled_70x120_model_history_1')
