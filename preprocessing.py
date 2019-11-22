@@ -141,7 +141,7 @@ def train_rgb_network_scaled_36x60(input_file, history_file):
     adam = Adam(learning_rate=0.0001)
     autoencoder.compile(optimizer=adam, loss='binary_crossentropy')
     callbacklist = [checkpoint]
-    hist = autoencoder.fit(input_array, input_array, epochs=20, verbose=True, callbacks=callbacklist)
+    hist = autoencoder.fit(input_array, input_array, epochs=120, verbose=True, callbacks=callbacklist)
 
     with open(history_file, 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
@@ -226,7 +226,7 @@ def train_again(model_file):
     checkpoint = ModelCheckpoint(model_file, monitor='loss', verbose=1, save_best_only=True, mode='min')
     trainGen = generate_input(spec_directory='mnt/0/rgb_observations', batch_size=64, scale=False)
     callbacklist = [checkpoint]
-    hist = model.fit_generator(trainGen, epochs=20, steps_per_epoch=360, verbose=True, callbacks=callbacklist)
+    hist = model.fit_generator(trainGen, epochs=120, steps_per_epoch=360, verbose=True, callbacks=callbacklist)
 
     # encoder.save('/mnt/0/convolutional_network_encoder_rgb')
 
@@ -285,5 +285,5 @@ def train_again(model_file):
 # train_again('/mnt/0/unscaled_cnn_autoencoder_rgb')
 # resize_images()
 # train_unscaled_rgb_network('bla bla')
-train_rgb_network_scaled_36x60('mnt/0/cnn_rgb_scaled_36x60/images_36x60.npy', 'mnt/0/cnn_rgb_unscaled_36x60/cnn_rgb_unscaled_36x60_model_history_1')
+train_rgb_network_scaled_36x60('mnt/0/cnn_rgb_scaled_36x60/images_36x60.npy', 'mnt/0/cnn_rgb_scaled_36x60/cnn_rgb_scaled_36x60_model_history_1')
 # train_rgb_network_scaled_70x120('images_70x120.npy', 'mnt/0/cnn_rgb_unscaled_70x120/cnn_rgb_unscaled_70x120_model_history_1')
