@@ -147,8 +147,8 @@ def train_rgb_network_scaled_36x60(input_file, history_file):
         pickle.dump(hist.history, file_pi)
 
 
-def train_rgb_network_scaled_70x120(input_file, history_file):
-    input_image = Input(shape=(70, 120, 3))
+def train_rgb_network_scaled_72x120(input_file, history_file):
+    input_image = Input(shape=(72, 120, 3))
     x = Conv2D(32, (2, 2), activation='relu', padding='same')(input_image)
     x = MaxPooling2D((2, 2), padding='same')(x)
     x = Conv2D(32, (2, 2), activation='relu', padding='same')(x)
@@ -166,12 +166,12 @@ def train_rgb_network_scaled_70x120(input_file, history_file):
     encoder.summary()
     input_array = numpy.load(input_file)
     input_array = input_array/255
-    checkpoint = ModelCheckpoint('mnt/0/cnn_rgb_scaled_70x120/cnn_rgb_scaled_70x120_model', monitor='loss', verbose=1,
+    checkpoint = ModelCheckpoint('mnt/0/cnn_rgb_scaled_72x120/cnn_rgb_scaled_72x120_model', monitor='loss', verbose=1,
                                  save_best_only=True, mode='min')
     adam = Adam(learning_rate=0.0001)
     autoencoder.compile(optimizer=adam, loss='binary_crossentropy')
     callbacklist = [checkpoint]
-    hist = autoencoder.fit(input_array, input_array, epochs=120, batch_size=256, verbose=True, callbacks=callbacklist)
+    hist = autoencoder.fit(input_array, input_array, epochs=120, batch_size=64, verbose=True, callbacks=callbacklist)
 
     with open(history_file, 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
@@ -236,7 +236,7 @@ def train_again(model_file):
 
 # def resize_images():
 #     i = 0
-#     images_36x60 = numpy.zeros([23125, 36, 60, 3])
+#     images_72x120 = numpy.zeros([23125, 72, 120, 3])
 #
 #     for filename in os.listdir('/Users/m_vys/Downloads/rgb_observations'):
 #         array = numpy.load('/Users/m_vys/Downloads/rgb_observations/'+ filename)
@@ -248,23 +248,23 @@ def train_again(model_file):
 #         h1 = 36
 #         w1 = 60
 #
-#         h2 = 70
+#         h2 = 72
 #         w2 = 120
 #
 #         h3 = 175
 #         w3 = 300
 #
-#         img1A = img.resize((w1, h1), Image.ANTIALIAS)
+#         img1A = img.resize((w2, h2), Image.ANTIALIAS)
 #         pix = numpy.array(img1A)
-#         images_36x60[i] = pix
+#         images_72x120[i] = pix
 #         print(i)
 #         i += 1
 #
-#     numpy.save('images_36x60', images_36x60)
-#
-#
-#         # show_image(w1, h1, img)
-#         # show_image(w2, h2, img)
+#     numpy.save('images_72x120', images_72x120)
+
+
+        # show_image(w1, h1, img)
+        # show_image(w2, h2, img)
         # show_image(w3, h3, img)
 
 # def show_image(width, height, img):
@@ -286,5 +286,5 @@ def train_again(model_file):
 # train_again('/mnt/0/unscaled_cnn_autoencoder_rgb')
 # resize_images()
 # train_unscaled_rgb_network('bla bla')
-train_rgb_network_scaled_36x60('mnt/0/cnn_rgb_scaled_36x60/images_36x60.npy', 'mnt/0/cnn_rgb_scaled_36x60/cnn_rgb_scaled_36x60_model_history_1')
-# train_rgb_network_scaled_70x120('images_70x120.npy', 'mnt/0/cnn_rgb_scaled_70x120/cnn_rgb_scaled_70x120_model_history_1')
+# train_rgb_network_scaled_36x60('mnt/0/cnn_rgb_scaled_36x60/images_36x60.npy', 'mnt/0/cnn_rgb_scaled_36x60/cnn_rgb_scaled_36x60_model_history_1')
+train_rgb_network_scaled_72x120('images_72x120.npy', 'mnt/0/cnn_rgb_scaled_72x120/cnn_rgb_scaled_72x120_model_history_1')
