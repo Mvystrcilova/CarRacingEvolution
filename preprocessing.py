@@ -287,4 +287,4 @@ def train_again(model_file):
 # resize_images()
 # train_unscaled_rgb_network('bla bla')
 # train_rgb_network_scaled_36x60('mnt/0/cnn_rgb_scaled_36x60/images_36x60.npy', 'mnt/0/cnn_rgb_scaled_36x60/cnn_rgb_scaled_36x60_model_history_1')
-train_rgb_network_scaled_72x120('images_72x120.npy', 'mnt/0/cnn_rgb_scaled_72x120/cnn_rgb_scaled_72x120_model_history_1')
+train_rgb_network_scaled_72x120('/mnt/0/cnn_rgb_scaled_72x120/images_72x120.npy', 'mnt/0/cnn_rgb_scaled_72x120/cnn_rgb_scaled_72x120_model_history_1')
