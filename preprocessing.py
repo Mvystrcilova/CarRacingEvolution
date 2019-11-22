@@ -223,6 +223,7 @@ def train_rgb_network(input_file):
 def train_again(model_file, input_file):
     model = load_model(model_file)
     input_arr = numpy.load(input_file)
+    input_arr = input_arr/255
     # encoder = K.function([model.layers[0].input], model.layers[5])
     # print(encoder.outputs.shape)
     checkpoint = ModelCheckpoint(model_file, monitor='loss', verbose=1, save_best_only=True, mode='min')
