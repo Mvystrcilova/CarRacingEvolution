@@ -24,7 +24,7 @@ class CarDrivers:
             for _ in range(500):
                 env.render()
                 # observation = convolutional_net.predict(observation).flatten()
-                observation = observation.reshape([1, 6300])
+                observation = observation.reshape([6300])
 
                 action = net.activate(observation)
                 action[0] = (((action[0] - 0) * (1 - (-1))/(1-0)) + (-1))
