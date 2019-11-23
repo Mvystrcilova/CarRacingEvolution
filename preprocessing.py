@@ -228,11 +228,11 @@ def train_again(model_file, input_file):
     # print(encoder.outputs.shape)
     checkpoint = ModelCheckpoint(model_file, monitor='loss', verbose=1, save_best_only=True, mode='min')
     callbacklist = [checkpoint]
-    hist = model.fit(input_arr, input_arr, epochs=120,batch_size=1024, verbose=True, callbacks=callbacklist)
+    hist = model.fit(input_arr, input_arr, epochs=120,batch_size=64, verbose=True, callbacks=callbacklist)
 
     # encoder.save('/mnt/0/convolutional_network_encoder_rgb')
 
-    with open('mnt/0/cnn_rgb_scaled_36x60/cnn_rgb_scaled_36x60_model_history_2', 'wb') as file_pi:
+    with open('mnt/0/cnn_rgb_scaled_36x60/cnn_rgb_scaled_36x60_model_history_3', 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
 
 # def resize_images():
