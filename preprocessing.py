@@ -232,7 +232,7 @@ def train_again(model_file, input_file):
 
     # encoder.save('/mnt/0/convolutional_network_encoder_rgb')
 
-    with open('mnt/0/cnn_rgb_scaled_36x60/cnn_rgb_scaled_36x60_model_history_3', 'wb') as file_pi:
+    with open('mnt/0/cnn_rgb_scaled_72x120/cnn_rgb_scaled_72x120_model_history_2', 'wb') as file_pi:
         pickle.dump(hist.history, file_pi)
 
 # def resize_images():
@@ -284,7 +284,9 @@ def train_again(model_file, input_file):
 
 # create_dataset()
 # train_rgb_network('/Users/m_vys/Downloads/rgb_observation_file.npy')
-train_again('mnt/0/cnn_rgb_scaled_36x60/cnn_rgb_scaled_36x60_model', 'mnt/0/cnn_rgb_scaled_36x60/images_36x60.npy')
+# train_again('mnt/0/cnn_rgb_scaled_36x60/cnn_rgb_scaled_36x60_model', 'mnt/0/cnn_rgb_scaled_36x60/images_36x60.npy')
+train_again('mnt/0/cnn_rgb_scaled_72x120/cnn_rgb_scaled_36x60_model', 'mnt/0/cnn_rgb_scaled_72x120/images_36x60.npy')
+
 # resize_images()
 # train_unscaled_rgb_network('bla bla')
 # train_rgb_network_scaled_36x60('mnt/0/cnn_rgb_scaled_36x60/images_36x60.npy', 'mnt/0/cnn_rgb_scaled_36x60/cnn_rgb_scaled_36x60_model_history_1')
