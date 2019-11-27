@@ -1,2 +1,0 @@
-genome fitness: -31.41263940520459 of genome with id: 1
-genome fitness: -43.54838709677454 of genome with id: 2
