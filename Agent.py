@@ -7,7 +7,7 @@ from PIL import Image
 
 env = gym.make('CarRacing-v0')
 observation_space = env.reset()
-h = open('results_checkpoint_1.txt', 'w+')
+h = open('results_checkpoint_3.txt', 'w+')
 class CarDrivers:
 
     def evaluate_genomes(self, genomes, config):
@@ -52,7 +52,7 @@ class CarDrivers:
         population.add_reporter(neat.StdOutReporter(True))
         stats = neat.StatisticsReporter()
         population.add_reporter(stats)
-        population.add_reporter(neat.Checkpointer(10, filename_prefix='neat_checkpoints/checkpoint_1_'))
+        population.add_reporter(neat.Checkpointer(10, filename_prefix='neat_checkpoints/checkpoint_2_'))
 
         winner = population.run(self.evaluate_genomes, 300)
 
